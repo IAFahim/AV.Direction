@@ -1,0 +1,28 @@
+{
+  "name": "com.av.direction",
+  "version": "1.0.0",
+  "displayName": "AV Direction",
+  "description": "Professional directional attribute system with Scene gizmos and Inspector integration for vector editing.",
+  "unity": "2021.3",
+  "dependencies": {
+    "com.unity.mathematics": "1.2.6"
+  },
+  "keywords": [
+    "direction",
+    "gizmos",
+    "editor-tools",
+    "vectors",
+    "scene-view"
+  ],
+  "category": "Editor Extensions",
+  "author": {
+    "name": "IAFahim",
+    "email": "iafahim.dev@gmail.com",
+    "url": "https://github.com/IAFahim"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/IAFahim/AV.Direction"
+  },
+  "licensesUrl": "https://github.com/IAFahim/AV.Direction/blob/main/LICENSE.md"
+}
