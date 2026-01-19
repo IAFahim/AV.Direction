@@ -1,12 +1,11 @@
 using UnityEngine;
 using AV.Direction.Runtime.Enums;
 
-[HelpURL("https://github.com/IAFahim/AV.Direction")]
-
 namespace AV.Direction.Editor.State
 {
     public enum HandleType { Angle, Line, Radius }
 
+    [HelpURL("https://github.com/IAFahim/AV.Direction")]
     public class DirectionHandleData
     {
         // Identity

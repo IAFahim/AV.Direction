@@ -1,14 +1,13 @@
 using System;
 using UnityEngine;
 
-[HelpURL("https://github.com/IAFahim/AV.Direction")]
-
 namespace AV.Direction.Runtime.Attributes
 {
     /// <summary>
     /// Visualizes a float as a linear distance along a local axis.
     /// Example: [LineRange(0, 0, 1)] for forward distance.
     /// </summary>
+    [HelpURL("https://github.com/IAFahim/AV.Direction")]
     [AttributeUsage(AttributeTargets.Field, AllowMultiple = false, Inherited = true)]
     public class LineRangeAttribute : PropertyAttribute
     {

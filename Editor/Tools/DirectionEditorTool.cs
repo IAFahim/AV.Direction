@@ -8,12 +8,11 @@ using AV.Direction.Editor.Core;
 using AV.Direction.Editor.Drawing;
 using AV.Direction.Editor.Settings;
 
-[HelpURL("https://github.com/IAFahim/AV.Direction")]
-[AddComponentMenu("AV/Direction/DirectionEditorTool")]
-
 namespace AV.Direction.Editor.Tools
 {
     // Important: Target GameObject to catch selection properly
+    [HelpURL("https://github.com/IAFahim/AV.Direction")]
+    [AddComponentMenu("AV/Direction/DirectionEditorTool")]
     [EditorTool("Direction Visualizer", typeof(GameObject))]
     public class DirectionEditorTool : EditorTool
     {
