@@ -1,0 +1,10 @@
+{
+  "name": "com.av.direction",
+  "version": "1.0.0",
+  "displayName": "AV Direction Visualizer",
+  "description": "A high-performance, Juice-focused direction and range visualizer for Unity Scene View.",
+  "unity": "2021.3",
+  "dependencies": {
+    "com.unity.mathematics": "1.2.6"
+  }
+}
