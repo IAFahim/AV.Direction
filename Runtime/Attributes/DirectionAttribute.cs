@@ -4,7 +4,6 @@ using UnityEngine;
 
 namespace AV.Direction.Runtime.Attributes
 {
-    [HelpURL("https://github.com/IAFahim/AV.Direction")]
     [AttributeUsage(AttributeTargets.Field, AllowMultiple = false, Inherited = true)]
     public class DirectionAttribute : PropertyAttribute
     {

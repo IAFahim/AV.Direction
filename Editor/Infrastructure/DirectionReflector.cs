@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 using System.Reflection;
@@ -9,10 +9,9 @@ namespace AV.Direction.Editor.Infrastructure
 {
     public static class DirectionReflector
     {
-        // Reusable list to reduce GC
-        private static readonly List<DirectionHandleData> s_Buffer = new List<DirectionHandleData>();
+        private static readonly List<DirectionState> s_Buffer = new List<DirectionState>();
 
-        public static List<DirectionHandleData> GetHandles(GameObject target)
+        public static List<DirectionState> GetHandles(GameObject target)
         {
             s_Buffer.Clear();
             if (target == null) return s_Buffer;
@@ -26,13 +25,11 @@ namespace AV.Direction.Editor.Infrastructure
             return s_Buffer;
         }
 
-        private static void ExtractHandlesFromComponent(MonoBehaviour comp, List<DirectionHandleData> list)
+        private static void ExtractHandlesFromComponent(MonoBehaviour comp, List<DirectionState> list)
         {
             var type = comp.GetType();
             var transform = comp.transform;
-
-            // We use SerializedObject to access properties safely for Undo support later
-            var serializedObject = new SerializedObject(comp);
+            var so = new SerializedObject(comp);
 
             foreach (var field in type.GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic))
             {
@@ -40,22 +37,19 @@ namespace AV.Direction.Editor.Infrastructure
                 var dirAttr = field.GetCustomAttribute<DirectionAttribute>();
                 if (dirAttr != null)
                 {
-                    // Calculate World Rotation for the handle
-                    var prop = serializedObject.FindProperty(field.Name);
+                    var prop = so.FindProperty(field.Name);
                     if(prop == null) continue;
 
                     float angle = prop.propertyType == SerializedPropertyType.Float ? prop.floatValue : prop.intValue;
-
-                    // Convert Angle to Rotation (Relative to object)
                     Quaternion angleRot = Quaternion.AngleAxis(angle, transform.up);
                     Quaternion worldRot = transform.rotation * angleRot;
 
-                    list.Add(new DirectionHandleData
+                    list.Add(new DirectionState
                     {
                         Component = comp,
                         PropertyPath = field.Name,
                         PropertyName = ObjectNames.NicifyVariableName(field.Name),
-                        Type = HandleType.Angle,
+                        Type = DirectionHandleType.Angle,
                         Style = dirAttr.Style,
                         Color = dirAttr.UseCustomColor ? dirAttr.CustomColor : Core.DirectionColors.DefaultDirection,
                         VisualLength = dirAttr.Length,
@@ -71,23 +65,23 @@ namespace AV.Direction.Editor.Infrastructure
                 var lineAttr = field.GetCustomAttribute<LineRangeAttribute>();
                 if (lineAttr != null)
                 {
-                    var prop = serializedObject.FindProperty(field.Name);
+                    var prop = so.FindProperty(field.Name);
                     if(prop == null) continue;
 
                     float dist = prop.propertyType == SerializedPropertyType.Float ? prop.floatValue : prop.intValue;
                     Vector3 worldAxis = transform.TransformDirection(lineAttr.Axis);
                     Vector3 handlePos = transform.position + (worldAxis * dist);
 
-                    list.Add(new DirectionHandleData
+                    list.Add(new DirectionState
                     {
                         Component = comp,
                         PropertyPath = field.Name,
                         PropertyName = ObjectNames.NicifyVariableName(field.Name),
-                        Type = HandleType.Line,
+                        Type = DirectionHandleType.Line,
                         Color = lineAttr.UseCustomColor ? lineAttr.CustomColor : Core.DirectionColors.DefaultLineRange,
                         LocalAxis = lineAttr.Axis,
                         CurrentValue = dist,
-                        WorldPosition = handlePos, // Handle is at the tip
+                        WorldPosition = handlePos,
                         WorldRotation = transform.rotation
                     });
                     continue;
@@ -97,18 +91,18 @@ namespace AV.Direction.Editor.Infrastructure
                 var rangeAttr = field.GetCustomAttribute<RangeCircleAttribute>();
                 if (rangeAttr != null)
                 {
-                    var prop = serializedObject.FindProperty(field.Name);
+                    var prop = so.FindProperty(field.Name);
                     if(prop == null) continue;
 
                     float radius = prop.propertyType == SerializedPropertyType.Float ? prop.floatValue : prop.intValue;
                     Vector3 handlePos = transform.position + (transform.forward * radius);
 
-                    list.Add(new DirectionHandleData
+                    list.Add(new DirectionState
                     {
                         Component = comp,
                         PropertyPath = field.Name,
                         PropertyName = ObjectNames.NicifyVariableName(field.Name),
-                        Type = HandleType.Radius,
+                        Type = DirectionHandleType.Radius,
                         Color = rangeAttr.UseCustomColor ? rangeAttr.CustomColor : Core.DirectionColors.DefaultRange,
                         CurrentValue = radius,
                         WorldPosition = handlePos,

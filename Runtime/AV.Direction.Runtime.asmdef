@@ -1,6 +1,6 @@
 {
     "name": "AV.Direction.Runtime",
-    "rootNamespace": "AV.Direction",
+    "rootNamespace": "AV.Direction.Runtime",
     "references": [],
     "includePlatforms": [],
     "excludePlatforms": [],

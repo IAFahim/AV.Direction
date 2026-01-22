@@ -1,6 +1,6 @@
 {
     "name": "AV.Direction.Editor",
-    "rootNamespace": "AV.Direction",
+    "rootNamespace": "",
     "references": [
         "AV.Direction.Runtime",
         "Unity.Mathematics",
